@@ -461,13 +461,33 @@ M.not_chat = function(buf, file_name)
 		return "file too short"
 	end
 
-	if not lines[1]:match("^# ") then
+	-- Skip frontmatter if present
+	local start_idx = 0
+	if lines[1] == "---" then
+		for i = 2, #lines do
+			if lines[i] == "---" then
+				start_idx = i
+				break
+			end
+		end
+	end
+
+	-- Look for topic header after frontmatter
+	local topic_found = false
+	for i = start_idx + 1, math.min(start_idx + 5, #lines) do
+		if lines[i]:match("^# topic: ") then
+			topic_found = true
+			break
+		end
+	end
+	if not topic_found then
 		return "missing topic header"
 	end
 
+	-- Look for file header after frontmatter
 	local header_found = nil
-	for i = 1, 10 do
-		if i < #lines and lines[i]:match("^- file: ") then
+	for i = start_idx + 1, math.min(start_idx + 15, #lines) do
+		if lines[i]:match("^- file: ") then
 			header_found = true
 			break
 		end

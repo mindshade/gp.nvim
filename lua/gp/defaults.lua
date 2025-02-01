@@ -1,4 +1,21 @@
 local M = {}
+
+-- Function that returns default timestamp-based filename
+M.default_chat_filename = function()
+    return os.date("%Y%m%d_%H%M%S")
+end
+
+-- Function that returns default chat directory path
+M.default_chat_dir = function()
+    return vim.fn.stdpath("data"):gsub("/$", "") .. "/gp/chats"
+end
+
+-- Custom chat filename function (nil = use default)
+M.chat_custom_filename_func = nil
+
+-- Custom chat directory function (nil = use default)
+M.chat_dir_func = nil
+
 M.chat_system_prompt = "You are a general AI assistant.\n\n"
 	.. "The user provided the additional info about how they would like you to respond:\n\n"
 	.. "- If you're unsure don't guess and say you don't know instead.\n"

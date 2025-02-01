@@ -779,7 +779,11 @@ end
 M.new_chat = function(params, toggle, system_prompt, agent)
 	M._toggle_close(M._toggle_kind.popup)
 
-	local filename = M.config.chat_dir .. "/" .. M.logger.now() .. ".md"
+	local chat_filename = M.config.chat_custom_filename_func and M.config.chat_custom_filename_func() or M.defaults.default_chat_filename()
+	local chat_dir = M.config.chat_dir_func and M.config.chat_dir_func()
+		or M.config.chat_dir
+		or M.defaults.default_chat_dir()
+	local filename = chat_dir .. "/" .. chat_filename .. ".md"
 
 	-- encode as json if model is a table
 	local model = ""

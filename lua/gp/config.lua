@@ -284,8 +284,12 @@ local config = {
 		},
 	},
 
-	-- directory for storing chat files
-	chat_dir = vim.fn.stdpath("data"):gsub("/$", "") .. "/gp/chats",
+	-- directory for storing chat files (string or function that returns the directory path)
+	chat_dir = nil, -- nil = use default function from defaults.lua
+	-- custom function to generate chat directory path (nil = use default function)
+	chat_dir_func = nil,
+	-- custom function to generate chat filenames (nil = use default timestamp function)
+	chat_custom_filename_func = nil,
 	-- chat user prompt prefix
 	chat_user_prefix = "💬:",
 	-- chat assistant prompt prefix (static string or a table {static, template})
